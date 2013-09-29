@@ -1,0 +1,9 @@
+# BukkitCurrentWeather v0.2.0
+# @author     ucchy
+# @license    LGPLv3
+# @copyright  Copyright ucchy 2013
+
+syncTime: true
+ignoreWorlds: []
+intervalTicksSyncWeater: 24000
+intervalTicksSyncTime: 60

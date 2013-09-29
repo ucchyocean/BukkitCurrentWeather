@@ -1,0 +1,23 @@
+name: BukkitCurrentWeather
+main: com.github.ucchyocean.cw.CurrentWeather
+version: 0.2.0
+authors: [kebin, ucchy]
+description: Weather synchronize with real location.
+commands:
+  currentweather:
+    description: Current Weather plugin command.
+    aliases: [cw, cweather]
+    usage: |
+           /<command> find (latitude) (longitude) - Find city by latitude and longitude.
+           /<command> find (city) - Find city by city name.
+           /<command> japan - Find city from Japan map.
+           /<command> set (id) - Set city ID of CurrentWeather.
+           /<command> clear - Clear setting of CurrentWeather.
+           /<command> sync - Force synchronize with real weather.
+           /<command> reload - Reload config.yml.
+    permission: currentweather
+    permission-message: You don't have "<permission>" permission.
+permissions:
+  currentweather:
+    description: Current Weather plugin permission.
+    default: op
