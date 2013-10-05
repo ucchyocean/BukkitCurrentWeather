@@ -1,6 +1,8 @@
 CurrentWeather for CraftBukkit
 ==============================
 
+http://forum.minecraftuser.jp/viewtopic.php?f=38&t=15421
+
 Minecraft内の天気と時間の流れを、現実の都市と同期します。<br />
 例えば、ロンドンを設定した場合、ロンドンの天気情報と時差を計算し、現在のロンドンの状況をワールドへ反映します。<br />
 <br />
