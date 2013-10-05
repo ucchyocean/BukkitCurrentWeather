@@ -96,9 +96,11 @@ public class CurrentWeather extends JavaPlugin implements Listener {
             int weatherCode = lastWeather.getWeatherNumber();
             String weather_localized = Messages.get(
                     String.valueOf(weatherCode), lastWeather.getWeather());
+            String cityname_localized = Messages.get(
+                    lastWeather.getCity().getName(), lastWeather.getCity().getName());
 
             String message = String.format(msg_notify,
-                    lastWeather.getCity().getName(),
+                    cityname_localized,
                     weather_localized,
                     lastWeather.getTemparature() );
             player.sendMessage(message); 
@@ -424,9 +426,11 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         int weatherCode = lastWeather.getWeatherNumber();
         String weather_localized = Messages.get(
                 String.valueOf(weatherCode), lastWeather.getWeather());
+        String cityname_localized = Messages.get(
+                lastWeather.getCity().getName(), lastWeather.getCity().getName());
 
         String message = String.format(msg_notify,
-                lastWeather.getCity().getName(),
+                cityname_localized,
                 weather_localized,
                 lastWeather.getTemparature() );
         Bukkit.broadcastMessage(message);

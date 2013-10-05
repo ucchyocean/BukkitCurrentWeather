@@ -57,3 +57,8 @@ notify_url: '天気の詳細 %s'
 904: '熱い'
 905: '強風'
 906: 'ひょう'
+
+# city display names
+Yokohama-shi: '横浜市'
+London: 'ロンドン'
+
