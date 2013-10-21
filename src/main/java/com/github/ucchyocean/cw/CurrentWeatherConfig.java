@@ -23,7 +23,7 @@ public class CurrentWeatherConfig {
     private List<String> ignoreWorlds;
     
     /** 天気同期を実行するインターバル */
-    private int intervalTicksSyncWeater;
+    private int intervalTicksSyncWeather;
     
     /** 時刻同期を実行するインターバル */
     private int intervalTicksSyncTime;
@@ -48,7 +48,11 @@ public class CurrentWeatherConfig {
 
         config.syncTime = conf.getBoolean("syncTime", true);
         config.ignoreWorlds = conf.getStringList("ignoreWorlds");
-        config.intervalTicksSyncWeater = conf.getInt("intervalTicksSyncWeater", 24000);
+        config.intervalTicksSyncWeather = conf.getInt("intervalTicksSyncWeather", 24000);
+        // intervalTicksSyncWeather が最小値を下回る場合に、強制的に最小値に変更する。see issue #3.
+        if ( config.intervalTicksSyncWeather < 12000 ) {
+            config.intervalTicksSyncWeather = 12000;
+        }
         config.intervalTicksSyncTime = conf.getInt("intervalTicksSyncTime", 60);
         config.city = conf.getInt("city", -1);
         
@@ -64,7 +68,7 @@ public class CurrentWeatherConfig {
         
         conf.set("syncTime", syncTime);
         conf.set("ignoreWorlds", ignoreWorlds);
-        conf.set("intervalTicksSyncWeater", intervalTicksSyncWeater);
+        conf.set("intervalTicksSyncWeather", intervalTicksSyncWeather);
         conf.set("intervalTicksSyncTime", intervalTicksSyncTime);
         conf.set("city", city);
         
@@ -86,10 +90,10 @@ public class CurrentWeatherConfig {
     }
 
     /**
-     * @return intervalTicksSyncWeater
+     * @return intervalTicksSyncWeather
      */
-    public int getIntervalTicksSyncWeater() {
-        return intervalTicksSyncWeater;
+    public int getIntervalTicksSyncWeather() {
+        return intervalTicksSyncWeather;
     }
 
     /**

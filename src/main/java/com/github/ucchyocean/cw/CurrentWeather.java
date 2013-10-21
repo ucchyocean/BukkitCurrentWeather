@@ -465,7 +465,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         syncTimeTaskID = task.getTaskId();
         
         // 天気更新タスクの起動
-        int iw = config.getIntervalTicksSyncWeater();
+        int iw = config.getIntervalTicksSyncWeather();
         task = scheduler.runTaskTimerAsynchronously(this, new SyncWeatherTask(), 1, iw);
         syncWeatherTaskID = task.getTaskId();
         

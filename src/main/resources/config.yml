@@ -5,5 +5,5 @@
 
 syncTime: true
 ignoreWorlds: []
-intervalTicksSyncWeater: 24000
+intervalTicksSyncWeather: 24000
 intervalTicksSyncTime: 60
