@@ -377,8 +377,8 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         // ワールドに設定
         for ( World world : CurrentWeather.instance.getServer().getWorlds() ) {
             if ( !ignoreWorlds.contains(world.getName()) ){
-                world.setWeatherDuration(Integer.MAX_VALUE);
-                world.setThunderDuration(Integer.MAX_VALUE);
+                world.setWeatherDuration(20000000);
+                world.setThunderDuration(20000000);
                 world.setStorm(isRain);
                 world.setThundering(isThundering);
             }
