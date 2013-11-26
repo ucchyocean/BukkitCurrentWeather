@@ -1,6 +1,6 @@
 name: BukkitCurrentWeather
 main: com.github.ucchyocean.cw.CurrentWeather
-version: 0.3.0
+version: 1.0.1
 authors: [kebin, ucchy]
 description: Weather synchronize with real location.
 commands:

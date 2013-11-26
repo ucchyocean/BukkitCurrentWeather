@@ -22,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.weather.ThunderChangeEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -356,6 +358,38 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         int city = CurrentWeather.lastWeather.getCity().getId();
         if ( lastCode != code || lastCity != city ) {
             broadcastWeatherInformation();
+        }
+    }
+    
+    /**
+     * 雨が降り始めるとき、降り止むときに呼ばれるイベント。
+     * @param event 
+     */
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent event) {
+        if ( CurrentWeather.lastWeather != null ) {
+            boolean isRain = CurrentWeather.lastWeather.getPrecipitation() > 0;
+            if ( event.toWeatherState() != isRain ) {
+                event.setCancelled(true);
+                getLogger().finest("Minecraft weather change cancelled.");
+            }
+        }
+    }
+    
+    /**
+     * 雷が鳴り始めるとき、鳴り止むときに呼び出されるイベント。
+     * @param event 
+     */
+    @EventHandler
+    public void onThunderChange(ThunderChangeEvent event) {
+        if ( CurrentWeather.lastWeather != null ) {
+            boolean isThundering = 
+                    (200 <= CurrentWeather.lastWeather.getWeatherNumber() && 
+                    CurrentWeather.lastWeather.getWeatherNumber() <= 299);
+            if ( event.toThunderState() != isThundering ) {
+                event.setCancelled(true);
+                getLogger().finest("Minecraft thunder change cancelled.");
+            }
         }
     }
     
