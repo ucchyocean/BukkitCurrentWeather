@@ -1,6 +1,8 @@
 CurrentWeather for CraftBukkit
 ==============================
 
+Build Status : [![Build Status](https://travis-ci.org/ucchyocean/BukkitCurrentWeather.svg)](https://travis-ci.org/ucchyocean/BukkitCurrentWeather)
+
 http://forum.minecraftuser.jp/viewtopic.php?f=38&t=15421
 
 Minecraft内の天気と時間の流れを、現実の都市と同期します。<br />

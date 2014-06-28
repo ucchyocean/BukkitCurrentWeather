@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
  * @author ucchy
  */
 public class OpenWeatherMapCity {
-    
+
     private int id;
     private String name;
     private double lat;
@@ -22,19 +22,19 @@ public class OpenWeatherMapCity {
     private String country;
     private Date sunrise;
     private Date sunset;
-    
+
     private OpenWeatherMapCity() {
     }
-    
+
     /**
      * 指定されたXMLノードから、都市情報を読み取り、インスタンスを生成する。
      * @param node XMLノード
      * @return インスタンス
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static OpenWeatherMapCity parse(Node node) 
+    public static OpenWeatherMapCity parse(Node node)
             throws OpenWeatherMapAccessException {
-        
+
         OpenWeatherMapCity city = new OpenWeatherMapCity();
         city.id = XMLUtility.getIntFromPathAttr(node, "", "id");
         city.name = XMLUtility.getStringFromPathAttr(node, "", "name");
@@ -94,7 +94,7 @@ public class OpenWeatherMapCity {
     public Date getSunset() {
         return sunset;
     }
-    
+
     /**
      * オブジェクトの文字列表現を返す。デバッグ用。
      * @see java.lang.Object#toString()

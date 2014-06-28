@@ -13,14 +13,14 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author ucchy
  */
 public class SyncTimeTask extends BukkitRunnable {
-    
+
     /**
      * 呼び出しごとに実行されるタスク処理
      * @see java.lang.Runnable#run()
      */
     @Override
     public void run() {
-        
+
         CurrentWeather.instance.getLogger().finest("- run SyncTimeTask [" + hashCode() + "]");
 
         // 時刻情報を計算して、サーバーに反映

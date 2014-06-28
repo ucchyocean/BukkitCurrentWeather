@@ -2,7 +2,7 @@ name: BukkitCurrentWeather
 main: com.github.ucchyocean.cw.CurrentWeather
 version: 1.0.1
 authors: [kebin, ucchy]
-description: Weather synchronize with real location.
+description: Weather synchronization with real location.
 commands:
   currentweather:
     description: Current Weather plugin command.

@@ -34,19 +34,19 @@ public class OpenWeatherMapWeather {
     private int weatherNumber;
     private String weather;
     private Date lastupdate;
-    
+
     private OpenWeatherMapWeather() {
     }
-    
+
     /**
      * 指定されたXMLノードから、天気情報を読み取り、インスタンスを生成する。
      * @param node XMLノード
      * @return インスタンス
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static OpenWeatherMapWeather parse(Node node) 
+    public static OpenWeatherMapWeather parse(Node node)
             throws OpenWeatherMapAccessException {
-        
+
         OpenWeatherMapWeather weather = new OpenWeatherMapWeather();
         weather.city = OpenWeatherMapCity.parse(
                 XMLUtility.getNodeFromNodeList(node.getChildNodes(), "city"));
@@ -74,7 +74,7 @@ public class OpenWeatherMapWeather {
         weather.weatherNumber = XMLUtility.getIntFromPathAttr(node, "weather", "number");
         weather.weather = XMLUtility.getStringFromPathAttr(node, "weather", "value");
         weather.lastupdate = XMLUtility.getDateFromPathAttr(node, "lastupdate", "value");
-        
+
         return weather;
     }
 
@@ -210,7 +210,7 @@ public class OpenWeatherMapWeather {
     public Date getLastupdate() {
         return lastupdate;
     }
-    
+
     /**
      * オブジェクトの文字列表現を返す。デバッグ用。
      * @see java.lang.Object#toString()
@@ -223,10 +223,10 @@ public class OpenWeatherMapWeather {
                 "pressure=%f, wind={%s}, cloudsName=%s, clouds=%d, precipitation=%f, " +
                 "precipitationMode=%s, precipitationUnit=%s, " +
                 "weatherIcon=%s, weatherNumber=%d, weather=%s, lastupdate=%s",
-                city, temparatureMax, temparatureMin, temparatureUnit, 
-                temparature, humidityUnit, humidity, pressureUnit, 
-                pressure, wind, cloudsName, clouds, precipitation, 
+                city, temparatureMax, temparatureMin, temparatureUnit,
+                temparature, humidityUnit, humidity, pressureUnit,
+                pressure, wind, cloudsName, clouds, precipitation,
                 precipitationMode, precipitationUnit,
                 weatherIcon, weatherNumber, weather, lastupdate);
     }
-} 
+}

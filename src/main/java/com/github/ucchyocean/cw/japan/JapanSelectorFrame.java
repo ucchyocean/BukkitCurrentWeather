@@ -29,18 +29,18 @@ public class JapanSelectorFrame extends JFrame {
         getContentPane().add(panel);
         pack();
     }
-    
+
     /**
      * GUIを開く
      * @return GUI内でユーザーが選択した都市、キャンセルしたり閉じた場合はnullになる
      */
     public OpenWeatherMapWeather showWindow() {
-        
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        
+
         JOptionPane.showMessageDialog(this, "設定したい都市を、地図上でクリックしてください。");
-        
+
         try {
             while ( this.isVisible() ) {
                 Thread.sleep(1000);
@@ -48,15 +48,15 @@ public class JapanSelectorFrame extends JFrame {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         panel.flushImage();
-        
+
         return selected;
     }
-    
+
     /**
      * デバッグ用エントリ
-     * @param args 
+     * @param args
      */
     public static void main(String[] args) {
         JapanSelectorFrame f = new JapanSelectorFrame();

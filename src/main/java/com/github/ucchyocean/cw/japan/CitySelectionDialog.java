@@ -34,12 +34,12 @@ public class CitySelectionDialog extends JDialog implements Runnable {
     private double lat;
     private double lon;
     private OpenWeatherMapAccessException lastException;
-    
+
     private JPanel rootPane;
     private JLabel progressLabel1;
     private JLabel progressLabel2;
     private JButton cancelButton;
-    
+
     private CitySelectionDialog dialog;
     private JapanSelectorFrame owner;
 
@@ -50,21 +50,21 @@ public class CitySelectionDialog extends JDialog implements Runnable {
      * @param lon 経度
      */
     public CitySelectionDialog(JapanSelectorFrame owner, double lat, double lon) {
-        
+
         super(owner, true);
         dialog = this;
         this.owner = owner;
         this.lat = lat;
         this.lon = lon;
-        
+
         Container contentPane = getContentPane();
         rootPane = new JPanel();
-        
+
         contentPane.setLayout(new FlowLayout());
         contentPane.add(rootPane, BorderLayout.CENTER);
-        
+
         rootPane.setLayout(new GridLayout(0, 1, 5, 5));
-        
+
         progressLabel1 = new JLabel("情報取得中です...", JLabel.CENTER);
         progressLabel2 = new JLabel("", JLabel.CENTER);
         cancelButton = new JButton("キャンセル");
@@ -77,10 +77,10 @@ public class CitySelectionDialog extends JDialog implements Runnable {
         rootPane.add(progressLabel1);
         rootPane.add(progressLabel2);
         rootPane.add(cancelButton);
-        
+
         pack();
     }
-    
+
     /**
      * ダイアログを開く。
      * 開くと同時にスレッドが起動し、緯度経度に見合った都市の取得を行う。
@@ -99,7 +99,7 @@ public class CitySelectionDialog extends JDialog implements Runnable {
      */
     @Override
     public void run() {
-        
+
         ArrayList<OpenWeatherMapWeather> results = null;
         try {
             results = OpenWeatherMapAccesser.findCity(lat, lon);
@@ -109,16 +109,16 @@ public class CitySelectionDialog extends JDialog implements Runnable {
         }
         callback(results);
     }
-    
+
     /**
      * 非同期処理のコールバック。
      * @param results 非同期処理の実行結果
      */
     private void callback(ArrayList<OpenWeatherMapWeather> results) {
-        
+
         if ( results == null ) {
             // エラーが発生した場合
-            
+
             progressLabel1.setText("都市情報取得でエラーが発生しました。");
             progressLabel1.setForeground(Color.RED);
             progressLabel2.setText(lastException.toString());
@@ -127,17 +127,17 @@ public class CitySelectionDialog extends JDialog implements Runnable {
             pack();
             return;
         }
-        
+
         if ( results.size() == 0 ) {
             // 一つも該当が見つからない場合
-            
+
             progressLabel1.setText(
                     "クリックした場所に都市が見つかりませんでした。");
             cancelButton.setText("閉じる");
             pack();
             return;
         }
-        
+
         progressLabel1.setText(results.size() + " 個の都市が見つかりました。");
         progressLabel2.setText("都市を選択してください。");
         for ( OpenWeatherMapWeather r : results ) {
@@ -145,7 +145,7 @@ public class CitySelectionDialog extends JDialog implements Runnable {
             OpenWeatherMapCity city = weather.getCity();
             double distance = calcDistance(lat, lon, city.getLat(), city.getLon());
             String desc = String.format(
-                    "%s, %s (%.2f, %.2f) %.1fm", 
+                    "%s, %s (%.2f, %.2f) %.1fm",
                     city.getName(), city.getCountry(), city.getLat(), city.getLon(), distance );
             JButton button = new JButton(desc);
             button.addActionListener(new ActionListener() {
@@ -163,11 +163,11 @@ public class CitySelectionDialog extends JDialog implements Runnable {
 
     private static double calcDistance(double lat1, double lng1,
                                         double lat2, double lng2){
-        
+
         double a = 6378137.000;
         double e2 = 0.00669438002301188;
         double mnum = 6335439.32708317;
-        
+
         double my = deg2rad((lat1 + lat2) / 2.0);
         double dy = deg2rad(lat1 - lat2);
         double dx = deg2rad(lng1 - lng2);
@@ -176,7 +176,7 @@ public class CitySelectionDialog extends JDialog implements Runnable {
         double w = Math.sqrt(1.0 - e2 * sin * sin);
         double m = mnum / (w * w * w);
         double n = a / w;
-        
+
         double dym = dy * m;
         double dxncos = dx * n * Math.cos(my);
 

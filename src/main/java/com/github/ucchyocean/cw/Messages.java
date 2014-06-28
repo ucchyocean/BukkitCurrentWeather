@@ -41,7 +41,7 @@ public class Messages {
             Utility.copyFileFromJar(
                     CurrentWeather.instance.getPluginJarFile(), file, FILE_NAME_JA);
         }
-        
+
         // messages.yml を書き出す
         file = new File(
                 CurrentWeather.instance.getDataFolder() +

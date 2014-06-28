@@ -21,16 +21,16 @@ public class OpenWeatherMapWind {
 
     private OpenWeatherMapWind() {
     }
-    
+
     /**
      * 指定されたXMLノードから、風情報を読み取り、インスタンスを生成する。
      * @param node XMLノード
      * @return インスタンス
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static OpenWeatherMapWind parse(Node node) 
+    public static OpenWeatherMapWind parse(Node node)
             throws OpenWeatherMapAccessException {
-        
+
         OpenWeatherMapWind wind = new OpenWeatherMapWind();
         wind.speedName = XMLUtility.getStringFromPathAttr(node, "speed", "name");
         wind.speed = XMLUtility.getDoubleFromPathAttr(node, "speed", "value");
@@ -74,7 +74,7 @@ public class OpenWeatherMapWind {
     public double getDirection() {
         return direction;
     }
-    
+
     /**
      * オブジェクトの文字列表現を返す。デバッグ用。
      * @see java.lang.Object#toString()

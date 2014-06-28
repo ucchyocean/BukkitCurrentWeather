@@ -34,23 +34,23 @@ import org.xml.sax.SAXException;
 public class OpenWeatherMapAccesser {
 
     private static boolean DEBUG = false;
-    
+
     // API ID for ucchy. これは ucchyが保持するAPIキーです。
     // ソースコードを流用する場合は、必ずご自分のAPIキーに変更してください。
     private static final String APIID = "1a13b1cca307db6e646e524f26246ba5";
-    
+
     // 都市検索APIのURL（緯度経度）
     private static final String URL_API_FIND_BY_LATLON =
             "http://api.openweathermap.org/data/2.5/find?lat=%.6f&lon=%.6f&units=metric&mode=xml&APIID=" + APIID;
-    
+
     // 都市検索APIのURL（都市名）
     private static final String URL_API_FIND_BY_NAME =
             "http://api.openweathermap.org/data/2.5/find?q=%s&type=like&units=metric&mode=xml&APIID=" + APIID;
-    
+
     // 現在の天気取得APIのURL
     private static final String URL_API_CURRENT =
             "http://api.openweathermap.org/data/2.5/weather?id=%d&units=metric&mode=xml&APIID=" + APIID;
-    
+
     // 詳細天気情報へのURL
     private static final String URL_FORDETAIL = "http://openweathermap.org/city/%d";
 
@@ -60,9 +60,9 @@ public class OpenWeatherMapAccesser {
      * @param lat 緯度
      * @param lon 経度
      * @return 近隣の都市
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static ArrayList<OpenWeatherMapWeather> findCity(double lat, double lon) 
+    public static ArrayList<OpenWeatherMapWeather> findCity(double lat, double lon)
             throws OpenWeatherMapAccessException {
         String url = String.format(URL_API_FIND_BY_LATLON, lat, lon);
         return getWeatherItemsFromURL(url, "item");
@@ -71,28 +71,28 @@ public class OpenWeatherMapAccesser {
     /**
      * 与えられた地名から、一致する都市を検索して返します。
      * @return 近隣の都市
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static ArrayList<OpenWeatherMapWeather> findCity(String name) 
+    public static ArrayList<OpenWeatherMapWeather> findCity(String name)
             throws OpenWeatherMapAccessException {
         String url = String.format(URL_API_FIND_BY_NAME, name);
         return getWeatherItemsFromURL(url, "item");
     }
-    
+
     /**
      * 指定された都市IDの、現在の天気状況を返します。
      * @param id OpenWeatherMapで定義されている都市ID
      * @return 指定された都市の天気状況
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    public static OpenWeatherMapWeather getCurrentWeather(int id) 
+    public static OpenWeatherMapWeather getCurrentWeather(int id)
             throws OpenWeatherMapAccessException {
         String url = String.format(URL_API_CURRENT, id);
-        ArrayList<OpenWeatherMapWeather> results = 
+        ArrayList<OpenWeatherMapWeather> results =
                 getWeatherItemsFromURL(url, "current");
         return results.get(0);
     }
-    
+
     /**
      * 指定された都市IDの、天気詳細を参照するためのURLを返します。
      * @param id OpenWeatherMapで定義されている都市ID
@@ -108,9 +108,9 @@ public class OpenWeatherMapAccesser {
      * @param url URL
      * @param tag 取得するタグ名
      * @return 解析された天気情報オブジェクト
-     * @throws OpenWeatherMapAccessException 
+     * @throws OpenWeatherMapAccessException
      */
-    private static ArrayList<OpenWeatherMapWeather> getWeatherItemsFromURL(String url, String tag) 
+    private static ArrayList<OpenWeatherMapWeather> getWeatherItemsFromURL(String url, String tag)
             throws OpenWeatherMapAccessException {
 
         ArrayList<OpenWeatherMapWeather> results = new ArrayList<OpenWeatherMapWeather>();
@@ -118,19 +118,19 @@ public class OpenWeatherMapAccesser {
 
         try {
             long start = System.currentTimeMillis();
-            
+
             urlconn = (HttpURLConnection)((new URL(url)).openConnection());
             urlconn.setRequestMethod("GET");
             urlconn.setInstanceFollowRedirects(false);
             urlconn.connect();
-            
+
             long point1 = System.currentTimeMillis();
 
             DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = docBuilder.parse(urlconn.getInputStream(), "UTF-8");
 
             long point2 = System.currentTimeMillis();
-            
+
             if ( DEBUG ) {
                 try {
                     TransformerFactory transFactory = TransformerFactory.newInstance();
@@ -147,21 +147,21 @@ public class OpenWeatherMapAccesser {
                     // do nothing.
                 }
             }
-            
+
             NodeList list = document.getElementsByTagName(tag);
             for ( int i=0; i<list.getLength(); i++ ) {
                 results.add(OpenWeatherMapWeather.parse(list.item(i)));
             }
-            
+
             long point3 = System.currentTimeMillis();
-            
+
             if ( DEBUG ) {
                 System.out.println("Performance report :");
                 System.out.println(String.format("  Create HTTP connection : %d milli-sec", (point1 - start)));
                 System.out.println(String.format("  Wait for HTTP responce : %d milli-sec", (point2 - point1)));
                 System.out.println(String.format("  Parse XML to objects   : %d milli-sec", (point3 - point2)));
             }
-            
+
         } catch (MalformedURLException e) {
             throw new OpenWeatherMapAccessException(
                     "Error: Could not parse responce.", e);
@@ -191,13 +191,13 @@ public class OpenWeatherMapAccesser {
 
         return results;
     }
-    
+
     /**
      * デバッグ用エントリポイント
-     * @param args 
+     * @param args
      */
     public static void main(String[] args) {
-        
+
         DEBUG = true;
         int id = 1848354; // 横浜市
         try {

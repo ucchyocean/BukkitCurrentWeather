@@ -24,7 +24,7 @@ public class JapanPanel extends JPanel {
     // 地図画像の幅と高さ
     private static final int WIDTH = 392;
     private static final int HEIGHT = 436;
-    
+
     // 地図画像の (x, y) 座標から、緯度経度を求めるための、係数と切片
     private static final double LAT_GRADIENTS = -0.03469395065957088;
     private static final double LAT_INTERCEPTS = 45.94387998927136;
@@ -34,12 +34,12 @@ public class JapanPanel extends JPanel {
     private static final double LON_INTERCEPTS_OKINAWA = 123.06081681042787;
     private static final int ENDS_OKINAWA_X = 207;
     private static final int ENDS_OKINAWA_Y = 177;
-    
+
     private static final String IMAGE_FILE_PATH = "japan.png";
-    
+
     private JapanSelectorFrame ownerFrame;
     private Image image;
-    
+
     /**
      * コンストラクタ
      * @param owner 親となるフレームクラス
@@ -68,7 +68,7 @@ public class JapanPanel extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(WIDTH, HEIGHT);
     }
-    
+
     /**
      * パネルの描画処理
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
@@ -76,14 +76,14 @@ public class JapanPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         // 画像データのロードと描画
         Toolkit kit = Toolkit.getDefaultToolkit();
         image = kit.getImage(
                 getClass().getClassLoader().getResource(IMAGE_FILE_PATH));
         g.drawImage(image, 0, 0, WIDTH, HEIGHT, this);
     }
-    
+
     /**
      * 内部に保持している画像データを破棄して、メモリを開放します。
      * ウィンドウが閉じるときに必ず呼び出してください。
@@ -93,7 +93,7 @@ public class JapanPanel extends JPanel {
             image.flush();
         }
     }
-    
+
     /**
      * パネル内で選択されたX座標・Y座標を、緯度・経度に変換して返す
      * @param x X座標

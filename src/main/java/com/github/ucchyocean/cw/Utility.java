@@ -119,7 +119,7 @@ public class Utility {
 
         return source.matches("^-?[0-9]+$");
     }
-    
+
     /**
      * 文字列が小数点の数値に変換可能かどうかを判定する
      * @param source 変換対象の文字列

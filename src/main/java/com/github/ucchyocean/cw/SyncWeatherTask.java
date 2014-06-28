@@ -19,9 +19,9 @@ public class SyncWeatherTask extends BukkitRunnable {
      */
     @Override
     public void run() {
-        
+
         CurrentWeather.instance.getLogger().finest("- run SyncWeatherTask [" + hashCode() + "]");
-        
+
         // 天気情報を取得しサーバーに反映
         CurrentWeather.instance.getWeatherInformation();
     }
