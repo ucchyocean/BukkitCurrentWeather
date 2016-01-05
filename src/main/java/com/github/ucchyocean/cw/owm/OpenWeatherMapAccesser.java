@@ -37,19 +37,19 @@ public class OpenWeatherMapAccesser {
 
     // API ID for ucchy. これは ucchyが保持するAPIキーです。
     // ソースコードを流用する場合は、必ずご自分のAPIキーに変更してください。
-    private static final String APIID = "1a13b1cca307db6e646e524f26246ba5";
+    private static final String APIID = "be895364ad410c1772e5a056c05827a4";
 
     // 都市検索APIのURL（緯度経度）
     private static final String URL_API_FIND_BY_LATLON =
-            "http://api.openweathermap.org/data/2.5/find?lat=%.6f&lon=%.6f&units=metric&mode=xml&APIID=" + APIID;
+            "http://api.openweathermap.org/data/2.5/find?lat=%.6f&lon=%.6f&units=metric&mode=xml&appid=" + APIID;
 
     // 都市検索APIのURL（都市名）
     private static final String URL_API_FIND_BY_NAME =
-            "http://api.openweathermap.org/data/2.5/find?q=%s&type=like&units=metric&mode=xml&APIID=" + APIID;
+            "http://api.openweathermap.org/data/2.5/find?q=%s&type=like&units=metric&mode=xml&appid=" + APIID;
 
     // 現在の天気取得APIのURL
     private static final String URL_API_CURRENT =
-            "http://api.openweathermap.org/data/2.5/weather?id=%d&units=metric&mode=xml&APIID=" + APIID;
+            "http://api.openweathermap.org/data/2.5/weather?id=%d&units=metric&mode=xml&appid=" + APIID;
 
     // 詳細天気情報へのURL
     private static final String URL_FORDETAIL = "http://openweathermap.org/city/%d";
