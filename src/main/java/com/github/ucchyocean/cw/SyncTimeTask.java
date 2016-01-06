@@ -5,7 +5,6 @@
  */
 package com.github.ucchyocean.cw;
 
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -24,11 +23,10 @@ public class SyncTimeTask extends BukkitRunnable {
         CurrentWeather.instance.getLogger().finest("- run SyncTimeTask [" + hashCode() + "]");
 
         // 時刻情報を計算して、サーバーに反映
-        Bukkit.getScheduler().runTask(CurrentWeather.instance, new BukkitRunnable() {
-            @Override
+        new BukkitRunnable() {
             public void run() {
                 CurrentWeather.instance.syncTime();
             }
-        });
+        }.runTask(CurrentWeather.instance);
     }
 }

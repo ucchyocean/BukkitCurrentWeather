@@ -26,8 +26,6 @@ import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.github.ucchyocean.cw.japan.JapanSelectorFrame;
 import com.github.ucchyocean.cw.owm.OpenWeatherMapAccessException;
@@ -57,8 +55,8 @@ public class CurrentWeather extends JavaPlugin implements Listener {
     private String msg_notify_url;
 
     // 非同期タスクのID
-    private int syncTimeTaskID = -1;
-    private int syncWeatherTaskID = -1;
+    private SyncTimeTask syncTimeTask;
+    private SyncWeatherTask syncWeatherTask;
 
     /**
      * プラグインが有効化されたときのイベント
@@ -149,8 +147,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
             }
 
             // 都市情報取得
-            Bukkit.getScheduler().runTaskAsynchronously(this, new BukkitRunnable() {
-                @Override
+            new BukkitRunnable() {
                 public void run() {
 
                     try {
@@ -175,7 +172,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
                         s.sendMessage(ChatColor.RED + e.getLocalizedMessage());
                     }
                 }
-            });
+            }.runTaskAsynchronously(this);
 
             return true;
 
@@ -188,8 +185,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
                 return true;
             }
 
-            Bukkit.getScheduler().runTaskAsynchronously(this, new BukkitRunnable() {
-                @Override
+            new BukkitRunnable() {
                 public void run() {
 
                     // 地図を開く
@@ -209,7 +205,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
                         CurrentWeather.instance.getWeatherInformation();
                     }
                 }
-            });
+            }.runTaskAsynchronously(this);
 
             return true;
 
@@ -224,8 +220,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
             }
             final int id = Integer.parseInt(args[1]);
 
-            Bukkit.getScheduler().runTaskAsynchronously(this, new BukkitRunnable() {
-                @Override
+            new BukkitRunnable() {
                 public void run() {
 
                     try {
@@ -246,7 +241,7 @@ public class CurrentWeather extends JavaPlugin implements Listener {
                         s.sendMessage(PREFIX + ChatColor.RED + " Not found city id " + id);
                     }
                 }
-            });
+            }.runTaskAsynchronously(this);
 
             return true;
 
@@ -280,13 +275,12 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         } else if ( args[0].equalsIgnoreCase("sync") ) {
 
             // 天気情報を取得・同期
-            Bukkit.getScheduler().runTaskAsynchronously(this, new BukkitRunnable() {
-                @Override
+            new BukkitRunnable() {
                 public void run() {
                     getWeatherInformation();
                     s.sendMessage(PREFIX + " Weather was synchronized.");
                 }
-            });
+            }.runTaskAsynchronously(this);
 
             return true;
 
@@ -346,12 +340,11 @@ public class CurrentWeather extends JavaPlugin implements Listener {
         }
 
         // ワールドに天気を反映
-        Bukkit.getScheduler().runTask(instance, new BukkitRunnable() {
-            @Override
+        new BukkitRunnable() {
             public void run() {
                 syncWeather();
             }
-        });
+        }.runTask(this);
 
         // 今回の天気コードを取得、前回から変わっているなら、メッセージを流す
         int code = CurrentWeather.lastWeather.getWeatherNumber();
@@ -478,33 +471,29 @@ public class CurrentWeather extends JavaPlugin implements Listener {
      */
     private void startAsyncTask() {
 
-        CurrentWeather.instance.getLogger().finest("- entered startAsyncTask timetask=" +
-                syncTimeTaskID + ", weathertask=" + syncWeatherTaskID);
-
-        BukkitScheduler scheduler = Bukkit.getScheduler();
+        CurrentWeather.instance.getLogger().finest("- entered startAsyncTask");
 
         // 既に開始中のタスクがある場合は、停止を行う
-        if ( scheduler.isCurrentlyRunning(syncTimeTaskID) ) {
-            scheduler.cancelTask(syncTimeTaskID);
+        if ( syncTimeTask != null ) {
+            syncTimeTask.cancel();
+            syncTimeTask = null;
         }
-        if ( scheduler.isCurrentlyRunning(syncWeatherTaskID) ) {
-            scheduler.cancelTask(syncWeatherTaskID);
+        if ( syncWeatherTask != null ) {
+            syncWeatherTask.cancel();
+            syncWeatherTask = null;
         }
-
-        BukkitTask task = null;
 
         // 時刻更新タスクの起動
         int it = config.getIntervalTicksSyncTime();
-        task = scheduler.runTaskTimerAsynchronously(this, new SyncTimeTask(), it, it);
-        syncTimeTaskID = task.getTaskId();
+        syncTimeTask = new SyncTimeTask();
+        syncTimeTask.runTaskTimerAsynchronously(this, it, it);
 
         // 天気更新タスクの起動
         int iw = config.getIntervalTicksSyncWeather();
-        task = scheduler.runTaskTimerAsynchronously(this, new SyncWeatherTask(), 1, iw);
-        syncWeatherTaskID = task.getTaskId();
+        syncWeatherTask = new SyncWeatherTask();
+        syncWeatherTask.runTaskTimerAsynchronously(this, iw, iw);
 
-        CurrentWeather.instance.getLogger().finest("- exit startAsyncTask timetask=" +
-                syncTimeTaskID + ", weathertask=" + syncWeatherTaskID);
+        CurrentWeather.instance.getLogger().finest("- exit startAsyncTask");
     }
 
     /**
